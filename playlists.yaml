@@ -1,0 +1,42 @@
+paths:
+- &base_music_path "Y://Music"
+- &base_video_path "Y://Video"
+- &base_downloads_path "Y://Torrents/Local"
+- &videos "videos"
+- &live_sets "Live_sets"
+- &ambient "Ambient"
+- &live_gigs "Live_gigs"
+- &water_and_rain "Water_and_rain"
+- &music_cache "music_cache"
+formats:
+  - &best_av "bestvideo+bestaudio"
+  - &720 "bestvideo[height<=720]+bestaudio"
+  - &1080 "bestvideo[height<=1080]+bestaudio"
+playlists:
+  - live_sets:
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
+    format: *best_av
+    path:
+      - *base_music_path 
+      - *live_sets
+  - live_gigs:
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GtagFWCH6Njk5Rq5cf81pI
+    format: *best_av
+    path: 
+      - *base_music_path
+      - *live_gigs
+  - water_and_rain:
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2FAgKQqHdvWQPUxkXaOLx8v
+    format: *1080
+    path:
+      - *base_video_path
+      - *water_and_rain
+  # - music_cache:
+  #   url: 
+  #   - https://www.youtube.com/watch?v=RobhSr2bozU&list=PLqDGvd-6tzUsaYoXc5pkSyhqHMsOIRoOK
+  #   format: 'bestaudio/best'
+  #   path:
+  #     - *base_downloads_path
+  #     - *music_cache
+  - podcasts:
+  

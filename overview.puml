@@ -1,0 +1,11 @@
+@startuml overview
+start
+:Read yaml;
+:Extract Properties;
+note right
+  long running activity,
+  process requires signal to proceed
+end note
+:Download video;
+stop
+@enduml

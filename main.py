@@ -1,8 +1,10 @@
-from youtubesearchpython import PlaylistsSearch
+# from youtubesearchpython import PlaylistsSearch
 import os
 import yaml
 import yt_dlp
-
+import json
+from json import JSONDecodeError
+from pathlib import Path
 
 
 ydl_music_opts = {
@@ -49,13 +51,27 @@ def lidarr():
 
 # exit(0)
 
+def read_datas(file):
+    trading_info_file = Path(file)
+    if not os.path.exists(trading_info_file):
+        trading_info_file.touch(exist_ok=False)
+        return {}
+    # trading_info_file.touch(exist_ok=False)
+    with open(trading_info_file, 'r') as file:
+        try:
+            content = json.load(file)
+        except JSONDecodeError:
+            return {}
+        file.close()
+        return content
+
 with open("playlists.yaml", "r") as stream:
     try:
         playlist_yaml = yaml.safe_load(stream)
-        print(playlist_yaml)
         for playlist in playlist_yaml['playlists']:
             folder_for_download = '/'.join(playlist['path'])
-            file_path_and_regex = folder_for_download + '/%(artist)s--.%(album)s--%(title)s.mp3'
+            file_path_and_regex = folder_for_download + '/%(artist)s--.%(album)s--%(title)s'
+            already_downloaded = read_datas(folder_for_download + '/downloaded.txt')
             
             check_or_make_dir(folder_for_download)
             
@@ -65,7 +81,7 @@ with open("playlists.yaml", "r") as stream:
             tmp_ops = ydl_opts
             tmp_ops['outtmpl'] = file_path_and_regex
             tmp_ops['format'] = playlist['format']
-            tmp_ops['force-download-archive'] = folder_for_download + '/downloaded.txt'
+            tmp_ops['download_archive'] = folder_for_download + '/downloaded.txt'
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     try:
                         if isinstance(playlist['url'], str):

@@ -1,13 +1,14 @@
 paths:
-- &base_music_path "Y://Music"
-- &base_video_path "Y://Video"
-- &base_downloads_path "Y://Torrents/Local"
+- &base_music_path "/mnt/UBERVAULT/Music"
+- &base_video_path "/mnt/UBERVAULT/Video"
+- &base_downloads_path "/mnt/UBERVAULT/Torrents/Local"
 - &videos "videos"
 - &live_sets "Live_sets"
 - &ambient "Ambient"
 - &live_gigs "Live_gigs"
 - &water_and_rain "Water_and_rain"
 - &music_cache "music_cache"
+- &motor_sport "MotorSport"
 formats:
   - &best_av "bestvideo+bestaudio"
   - &720 "bestvideo[height<=720]+bestaudio"
@@ -33,10 +34,15 @@ playlists:
       - *water_and_rain
   # - music_cache:
   #   url: 
-  #   - https://www.youtube.com/watch?v=RobhSr2bozU&list=PLqDGvd-6tzUsaYoXc5pkSyhqHMsOIRoOK
-  #   format: 'bestaudio/best'
+  #   - https://www.youtube.com/watch?v=RobhSr2bozU
+  #   format: *720
   #   path:
   #     - *base_downloads_path
   #     - *music_cache
-  - podcasts:
-  
+  # - podcasts:
+  - motorsport:
+    url: https://www.youtube.com/watch?v=hIg7M3L0Nzc
+    format: *best_av
+    path:
+      - *base_video_path
+      - *motor_sport

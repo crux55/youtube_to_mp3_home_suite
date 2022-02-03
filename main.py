@@ -82,7 +82,7 @@ with open("playlists.yaml", "r") as stream:
             tmp_ops['outtmpl'] = file_path_and_regex
             tmp_ops['format'] = playlist['format']
             tmp_ops['download_archive'] = folder_for_download + '/downloaded.txt'
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            with yt_dlp.YoutubeDL(tmp_ops) as ydl:
                     try:
                         if isinstance(playlist['url'], str):
                             ydl.download([playlist['url']])

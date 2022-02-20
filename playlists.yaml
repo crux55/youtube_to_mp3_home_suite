@@ -32,6 +32,12 @@ playlists:
     path:
       - *base_video_path
       - *water_and_rain
+  - ambient:
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GcCbInkobDMgU0NzsToxFA
+    format: *1080
+    path:
+      - *base_video_path
+      - *ambient
   # - music_cache:
   #   url: 
   #   - https://www.youtube.com/watch?v=RobhSr2bozU

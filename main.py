@@ -1,4 +1,4 @@
-# from youtubesearchpython import PlaylistsSearch
+from youtubesearchpython import PlaylistsSearch
 import os
 import yaml
 import yt_dlp
@@ -33,22 +33,23 @@ def lidarr():
     import json
     headers = {'Content-Type': 'application/json', "X-Api-Key":"8cc08967f4de4899b56299ee7950baeb"}
     response = requests.get('http://192.168.1.103:4547/api/v1/wanted/missing', headers=headers)
-    album_name = response.json()['records'][0]['title']
-    artist_name = response.json()['records'][0]['artist']['artistName'] 
+    for record in response.json()['records']:
+        album_name = record['title']
+        artist_name = record['artist']['artistName']
+        print('{}, {}'.format(album_name, artist_name))
+        youtube_search(artist_name, album_name)
     # album_id = response.json()['records'][0]['releases'][0]
     # artist_id = response.json()['records'][0]['artistId']
     # exit(0)
-    videosSearch = PlaylistsSearch("{} {}".format(artist_name, album_name), limit = 2)
+
+
+def youtube_search(artist_name, album_name):
+    videosSearch = PlaylistsSearch("{} {}".format(artist_name, album_name), limit = 10)
     for result in videosSearch.result()['result']:
         print("{} ({}): {}".format(result['channel']['name'], result['videoCount'], result['link']))
-    # album = {"artistId": artist_id, "albumId": album_id}
-    # response = requests.get('http://192.168.1.103:4547/api/v1/album/', headers=headers, params=album)
-    # print(response.json())
-    parsed = json.loads(videosSearch.result())
-    print(json.dumps(parsed, indent=4, sort_keys=True))
+    
 
 # lidarr()
-
 # exit(0)
 
 def read_datas(file):

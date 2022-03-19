@@ -6,7 +6,6 @@ import json
 from json import JSONDecodeError
 from pathlib import Path
 
-
 ydl_music_opts = {
     'format': 'bestaudio/best',
     'download_archive': 'downloaded_songs.txt',
@@ -20,7 +19,8 @@ ydl_music_opts = {
 
 ydl_opts ={
     'no-overwrites': 'True',
-    'ignore-errors': 'True'
+    'ignore_errors': 'True',
+    # 'listformats' : 'False'
     }
 
 
@@ -71,10 +71,10 @@ with open("playlists.yaml", "r") as stream:
         playlist_yaml = yaml.safe_load(stream)
         for playlist in playlist_yaml['playlists']:
             folder_for_download = '/'.join(playlist['path'])
-            file_path_and_regex = folder_for_download + '/%(artist)s--.%(album)s--%(title)s'
+            file_path_and_regex = folder_for_download + '/%(title)s'
+            check_or_make_dir(folder_for_download)
             already_downloaded = read_datas(folder_for_download + '/downloaded.txt')
             
-            check_or_make_dir(folder_for_download)
             
             #set mp3 or mp4 based on what will output
             #set artist name and album in output file name
@@ -83,6 +83,8 @@ with open("playlists.yaml", "r") as stream:
             tmp_ops['outtmpl'] = file_path_and_regex
             tmp_ops['format'] = playlist['format']
             tmp_ops['download_archive'] = folder_for_download + '/downloaded.txt'
+            if 'max_downloads' in playlist:
+                tmp_ops['max_downloads'] = playlist['max_downloads']
             with yt_dlp.YoutubeDL(tmp_ops) as ydl:
                     try:
                         if isinstance(playlist['url'], str):
@@ -92,6 +94,8 @@ with open("playlists.yaml", "r") as stream:
                                 print(url)
                                 ydl.download(url)
                     except yt_dlp.utils.DownloadError as de:
+                        print(de)
+                    except yt_dlp.utils.MaxDownloadsReached as de:
                         print(de)
     except yaml.YAMLError as exc:
         print(exc)

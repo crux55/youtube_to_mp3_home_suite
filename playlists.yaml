@@ -9,10 +9,17 @@ paths:
 - &water_and_rain "Water_and_rain"
 - &music_cache "music_cache"
 - &motor_sport "MotorSport"
+- &mixes "Mixes"
+- &esports "Esports"
+- &wot "World of tanks"
+- &hots "Heroes of the storm"
+- &quake "Quake"
+- &mk "Mortal Kombat"
 formats:
   - &best_av "bestvideo+bestaudio"
   - &720 "bestvideo[height<=720]+bestaudio"
   - &1080 "bestvideo[height<=1080]+bestaudio"
+  - &twitch "best"
 playlists:
   - live_sets:
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
@@ -46,9 +53,44 @@ playlists:
   #     - *base_downloads_path
   #     - *music_cache
   # - podcasts:
-  - motorsport:
-    url: https://www.youtube.com/watch?v=hIg7M3L0Nzc
-    format: *best_av
+  # - motorsport:
+  #   url: https://www.youtube.com/watch?v=hIg7M3L0Nzc
+  #   format: *best_av
+  #   path:
+  #     - *base_video_path
+  #     - *motor_sport
+  - mixes:
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HtW78_Z3xk7CWu976tIMTk
+    format: *1080
     path:
-      - *base_video_path
-      - *motor_sport
+      - *base_music_path 
+      - *mixes
+  - wot:
+    url: https://www.twitch.tv/collections/D-fIcR9hphaBtA
+    format: *twitch
+    path:
+    - *base_video_path
+    - *esports
+    - *wot
+  - quake:
+    url: https://www.twitch.tv/quake/videos
+    format: *twitch
+    max_downloads: 4
+    path:
+    - *base_video_path
+    - *esports
+    - *quake
+  - hots:
+    url: https://www.twitch.tv/heroes_lounge/videos
+    format: *twitch
+    path:
+    - *base_video_path
+    - *esports
+    - *hots
+  - mk:
+    url: https://www.twitch.tv/netherrealm/videos
+    format: *twitch
+    path:
+    - *base_video_path
+    - *esports
+    - *mk

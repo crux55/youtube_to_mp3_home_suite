@@ -71,7 +71,7 @@ with open("playlists.yaml", "r") as stream:
         playlist_yaml = yaml.safe_load(stream)
         for playlist in playlist_yaml['playlists']:
             folder_for_download = '/'.join(playlist['path'])
-            file_path_and_regex = folder_for_download + '/%(title)s'
+            file_path_and_regex = folder_for_download + '/%(title)s.mp4'
             check_or_make_dir(folder_for_download)
             already_downloaded = read_datas(folder_for_download + '/downloaded.txt')
             

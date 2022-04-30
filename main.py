@@ -28,30 +28,6 @@ def check_or_make_dir(dir):
     if not os.path.exists(dir):
         os.mkdir(dir)
         
-def lidarr():
-    import requests
-    import json
-    headers = {'Content-Type': 'application/json', "X-Api-Key":"8cc08967f4de4899b56299ee7950baeb"}
-    response = requests.get('http://192.168.1.103:4547/api/v1/wanted/missing', headers=headers)
-    for record in response.json()['records']:
-        album_name = record['title']
-        artist_name = record['artist']['artistName']
-        print('{}, {}'.format(album_name, artist_name))
-        youtube_search(artist_name, album_name)
-    # album_id = response.json()['records'][0]['releases'][0]
-    # artist_id = response.json()['records'][0]['artistId']
-    # exit(0)
-
-
-def youtube_search(artist_name, album_name):
-    videosSearch = PlaylistsSearch("{} {}".format(artist_name, album_name), limit = 10)
-    for result in videosSearch.result()['result']:
-        print("{} ({}): {}".format(result['channel']['name'], result['videoCount'], result['link']))
-    
-
-# lidarr()
-# exit(0)
-
 def read_datas(file):
     trading_info_file = Path(file)
     if not os.path.exists(trading_info_file):

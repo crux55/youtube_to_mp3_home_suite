@@ -47,7 +47,10 @@ with open("playlists.yaml", "r") as stream:
         playlist_yaml = yaml.safe_load(stream)
         for playlist in playlist_yaml['playlists']:
             folder_for_download = '/'.join(playlist['path'])
-            file_path_and_regex = folder_for_download + '/%(title)s.mp4'
+            if 'name' in playlist:
+                file_path_and_regex = folder_for_download + '/' + playlist['name'] + '.mp4'
+            else:
+                file_path_and_regex = folder_for_download + '/%(title)s.mp4'
             check_or_make_dir(folder_for_download)
             already_downloaded = read_datas(folder_for_download + '/downloaded.txt')
             
@@ -61,6 +64,8 @@ with open("playlists.yaml", "r") as stream:
             tmp_ops['download_archive'] = folder_for_download + '/downloaded.txt'
             if 'max_downloads' in playlist:
                 tmp_ops['max_downloads'] = playlist['max_downloads']
+            if 'reverse' in playlist:
+                tmp_ops['playlist_reverse'] = True    
             with yt_dlp.YoutubeDL(tmp_ops) as ydl:
                     try:
                         if isinstance(playlist['url'], str):

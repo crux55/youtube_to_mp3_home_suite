@@ -15,11 +15,13 @@ paths:
 - &hots "Heroes of the storm"
 - &quake "Quake"
 - &mk "Mortal Kombat"
+- &r6sanz "Rainbow 6 siege ANZ"
 formats:
   - &best_av "bestvideo+bestaudio"
-  - &720 "bestvideo[height<=720]+bestaudio"
-  - &1080 "bestvideo[height<=1080]+bestaudio"
-  - &twitch "best"
+  - &720 "[height<=720]+bestaudio"
+  - &1080 "[height<=1080]+bestaudio"
+  - &twitch720 "720p60"
+  - &twitch480 "480"
 playlists:
   - live_sets:
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
@@ -65,28 +67,32 @@ playlists:
     path:
       - *base_music_path 
       - *mixes
-  - wot:
-    url: https://www.twitch.tv/collections/D-fIcR9hphaBtA
-    format: *twitch
-    path:
-    - *base_video_path
-    - *esports
-    - *wot
+  # - wot:
+  #   url: https://www.twitch.tv/collections/D-fIcR9hphaBtA
+  #   format: *twitch
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *wot
   # - quake:
   #   url: https://www.twitch.tv/quake/videos
   #   format: *twitch
-  #   max_downloads: 4
+  #   max_downloads: 17
+  #   reverse: true
+  #   name: '%(title)s'
   #   path:
   #   - *base_video_path
   #   - *esports
   #   - *quake
-  - hots:
-    url: https://www.twitch.tv/collections/cWrwLAwY6RZLuQ
-    format: *twitch
-    path:
-    - *base_video_path
-    - *esports
-    - *hots
+  # - hots:
+  #   url: https://www.twitch.tv/collections/cWrwLAwY6RZLuQ
+  #   format: *twitch
+  #   reverse: true
+  #   name: '%(title)s'
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *hots
   # - mk:
   #   url: https://www.twitch.tv/netherrealm/videos
   #   format: *twitch
@@ -94,3 +100,14 @@ playlists:
   #   - *base_video_path
   #   - *esports
   #   - *mk
+  
+  - r6s:
+    url: https://www.twitch.tv/rainbow6anz/videos
+    format: *1080
+    max_downloads: 3
+    # reverse: true
+    name: '%(title)s'
+    path:
+    - *base_video_path
+    - *esports
+    - *r6sanz

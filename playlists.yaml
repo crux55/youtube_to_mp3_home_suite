@@ -70,7 +70,7 @@ playlists:
       - *mixes
 
   - catVids:
-    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HtW78_Z3xk7CWu976tIMTk
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HwYeOKtJnC05IVI41xZvPP
     format: *1080
     path:
       - *base_video_path 

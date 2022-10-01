@@ -71,7 +71,7 @@ playlists:
 
   - catVids:
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HwYeOKtJnC05IVI41xZvPP
-    format: *1080
+    format: *720
     path:
       - *base_video_path 
       - *cats

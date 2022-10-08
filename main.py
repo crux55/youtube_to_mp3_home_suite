@@ -9,7 +9,7 @@ from pathlib import Path
 
 ydl_music_opts = {
     'no-overwrites': 'True',
-    'ignore_errors': 'True',
+    'ignoreerrors': 'True',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
@@ -19,7 +19,7 @@ ydl_music_opts = {
 
 ydl_opts ={
     'no-overwrites': 'True',
-    'ignore_errors': 'True',
+    'ignoreerrors': 'True',
     # 'listformats' : 'False'
     }
 

@@ -17,13 +17,24 @@ paths:
 - &mk "Mortal Kombat"
 - &r6sanz "Rainbow 6 siege ANZ"
 - &cats "Cat videos"
+- &bootlegs "bootlegs"
+- &techno "techno"
 formats:
   - &best_av "bestvideo+bestaudio"
   - &720 "[height<=720]+bestaudio"
   - &1080 "[height<=1080]+bestaudio"
   - &twitch720 "720p60"
   - &twitch480 "480"
+  - &audioonly "bestaudio/best"
 playlists:
+  - techno:
+    format: *audioonly
+    url: https://www.youtube.com/playlist?list=PLXl9q53Jut6n2PJ-Y4xyEHo1nIJF9o_Ez
+    path:
+      - *base_music_path
+      - *bootlegs
+      - *techno
+
   - live_sets:
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
     format: *best_av

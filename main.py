@@ -1,3 +1,4 @@
+from datetime import date
 from youtubesearchpython import PlaylistsSearch
 import os
 import yaml
@@ -7,9 +8,6 @@ from json import JSONDecodeError
 from pathlib import Path
 
 ydl_music_opts = {
-    'format': 'bestaudio/best',
-    'download_archive': 'downloaded_songs.txt',
-    'outtmpl': '%(title)s.%(ext)s',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
@@ -46,11 +44,16 @@ with open("playlists.yaml", "r") as stream:
     try:
         playlist_yaml = yaml.safe_load(stream)
         for playlist in playlist_yaml['playlists']:
+            extension = ".mp4"
+            tmp_ops = ydl_opts
+            if playlist_yaml['audio_only']:
+                extension = ".mp3"
+                tmp_ops = ydl_music_opts
             folder_for_download = '/'.join(playlist['path'])
             if 'name' in playlist:
-                file_path_and_regex = folder_for_download + '/' + playlist['name'] + '.mp4'
+                file_path_and_regex = folder_for_download + '/' + playlist['name'] + extension
             else:
-                file_path_and_regex = folder_for_download + '/%(title)s.mp4'
+                file_path_and_regex = folder_for_download + '/%(title)s' + extension
             check_or_make_dir(folder_for_download)
             already_downloaded = read_datas(folder_for_download + '/downloaded.txt')
             
@@ -58,7 +61,6 @@ with open("playlists.yaml", "r") as stream:
             #set mp3 or mp4 based on what will output
             #set artist name and album in output file name
             
-            tmp_ops = ydl_opts
             tmp_ops['outtmpl'] = file_path_and_regex
             tmp_ops['format'] = playlist['format']
             tmp_ops['download_archive'] = folder_for_download + '/downloaded.txt'

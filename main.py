@@ -8,6 +8,8 @@ from json import JSONDecodeError
 from pathlib import Path
 
 ydl_music_opts = {
+    'no-overwrites': 'True',
+    'ignore_errors': 'True',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',

@@ -19,6 +19,7 @@ paths:
 - &cats "Cat videos"
 - &bootlegs "bootlegs"
 - &techno "techno"
+- &trance "trance"
 formats:
   - &best_av "bestvideo+bestaudio"
   - &720 "[height<=720]+bestaudio"
@@ -34,6 +35,15 @@ playlists:
       - *base_music_path
       - *bootlegs
       - *techno
+    audio_only:
+
+  - trance:
+    format: *audioonly
+    url: https://www.youtube.com/playlist?list=PLy120FwxzcDUXO317zNyniUUyg2MWUptJ
+    path:
+      - *base_music_path
+      - *bootlegs
+      - *trance
     audio_only:
 
   - live_sets:

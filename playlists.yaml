@@ -34,6 +34,7 @@ playlists:
       - *base_music_path
       - *bootlegs
       - *techno
+    audio_only:
 
   - live_sets:
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq

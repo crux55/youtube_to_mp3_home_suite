@@ -46,7 +46,7 @@ with open("playlists.yaml", "r") as stream:
         for playlist in playlist_yaml['playlists']:
             extension = ".mp4"
             tmp_ops = ydl_opts
-            if playlist_yaml['audio_only']:
+            if 'audio_only' in playlist:
                 extension = ".mp3"
                 tmp_ops = ydl_music_opts
             folder_for_download = '/'.join(playlist['path'])

@@ -1,5 +1,6 @@
 from datetime import date
 from youtubesearchpython import PlaylistsSearch
+from yt_dlp import DateRange
 import os
 import yaml
 import yt_dlp
@@ -69,7 +70,11 @@ with open("playlists.yaml", "r") as stream:
             if 'max_downloads' in playlist:
                 tmp_ops['max_downloads'] = playlist['max_downloads']
             if 'reverse' in playlist:
-                tmp_ops['playlist_reverse'] = True    
+                tmp_ops['playlist_reverse'] = True
+            if 'datebefore' in playlist:
+                tmp_ops['datebefore'] = DateRange(start=playlist['datebefore'])
+            if 'dateafter' in playlist:
+                tmp_ops['dateafter'] = DateRange(end=playlist['dateafter'])
             with yt_dlp.YoutubeDL(tmp_ops) as ydl:
                     try:
                         if isinstance(playlist['url'], str):

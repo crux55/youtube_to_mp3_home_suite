@@ -99,14 +99,14 @@ playlists:
       - *cats
   - wot:
     url: https://www.twitch.tv/collections/m2MIi_nTERdJXQ
-    format: *twitch
+    format: *1080
     path:
     - *base_video_path
     - *esports
     - *wot
   - quake:
     url: https://www.twitch.tv/quake/videos
-    format: *twitch
+    format: *1080
     dateafter: 20220206
     # max_downloads: 17
     reverse: true
@@ -117,7 +117,7 @@ playlists:
     - *quake
   # - hots:
   #   url: https://www.twitch.tv/collections/cWrwLAwY6RZLuQ
-  #   format: *twitch
+  #   format: *1080
   #   reverse: true
   #   name: '%(title)s'
   #   path:
@@ -126,7 +126,7 @@ playlists:
   #   - *hots
   - mk:
     url: https://www.twitch.tv/netherrealm/videos
-    format: *twitch
+    format: *1080
     dateafter: 20210606 
     path:
     - *base_video_path

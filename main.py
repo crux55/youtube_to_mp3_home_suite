@@ -6,6 +6,7 @@ import yt_dlp
 import json
 from json import JSONDecodeError
 from pathlib import Path
+from yt_dlp import DateRange
 
 ydl_music_opts = {
     'no-overwrites': 'True',
@@ -71,9 +72,9 @@ with open("playlists.yaml", "r") as stream:
             if 'reverse' in playlist:
                 tmp_ops['playlistreverse'] = True
             if 'datebefore' in playlist:
-                tmp_ops['datebefore'] = playlist['datebefore']
+                tmp_ops['datebefore'] = DateRange(start=str(playlist['datebefore']))
             if 'dateafter' in playlist:
-                tmp_ops['dateafter'] = playlist['dateafter']
+                tmp_ops['daterange'] = DateRange(end=str(playlist['dateafter']))
             with yt_dlp.YoutubeDL(tmp_ops) as ydl:
                     try:
                         if isinstance(playlist['url'], str):

@@ -110,7 +110,7 @@ playlists:
     dateafter: 20220206
     # max_downloads: 17
     reverse: true
-    name: '%(title)s'
+    name: '%(upload_date>%Y-%m-%d-%H-%M-%S)s'
     path:
     - *base_video_path
     - *esports

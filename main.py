@@ -72,9 +72,9 @@ with open("playlists.yaml", "r") as stream:
             if 'reverse' in playlist:
                 tmp_ops['playlistreverse'] = True
             if 'datebefore' in playlist:
-                tmp_ops['datebefore'] = DateRange(start=str(playlist['datebefore']))
+                tmp_ops['datebefore'] = DateRange(end=str(playlist['datebefore']))
             if 'dateafter' in playlist:
-                tmp_ops['daterange'] = DateRange(end=str(playlist['dateafter']))
+                tmp_ops['daterange'] = DateRange(start=str(playlist['dateafter']))
             with yt_dlp.YoutubeDL(tmp_ops) as ydl:
                     try:
                         if isinstance(playlist['url'], str):

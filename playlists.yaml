@@ -109,7 +109,6 @@ playlists:
     format: *1080
     dateafter: 20220206
     max_downloads: 2
-    reverse: true
     name: '%(title)s'
     path:
     - *base_video_path

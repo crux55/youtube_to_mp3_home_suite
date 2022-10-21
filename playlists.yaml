@@ -108,9 +108,9 @@ playlists:
     url: https://www.twitch.tv/quake/videos
     format: *1080
     dateafter: 20220206
-    # max_downloads: 17
+    max_downloads: 2
     reverse: true
-    name: '%(upload_date>%Y-%m-%d-%H-%M-%S)s'
+    name: '%(title)s'
     path:
     - *base_video_path
     - *esports
@@ -124,20 +124,20 @@ playlists:
   #   - *base_video_path
   #   - *esports
   #   - *hots
-  - mk:
-    url: https://www.twitch.tv/netherrealm/videos
-    format: *1080
-    dateafter: 20210606 
-    path:
-    - *base_video_path
-    - *esports
-    - *mk
+  # - mk:
+  #   url: https://www.twitch.tv/netherrealm/videos
+  #   format: *1080
+  #   dateafter: 20210606 
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *mk
   
   - r6s:
     url: https://www.twitch.tv/rainbow6anz/videos
     format: *1080
-    max_downloads: 4
-    # reverse: true
+    dateafter: 20220909
+    reverse: true
     name: '%(title)s-%(upload_date>%Y-%m-%d)s'
     path:
     - *base_video_path

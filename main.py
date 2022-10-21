@@ -69,7 +69,7 @@ with open("playlists.yaml", "r") as stream:
             if 'max_downloads' in playlist:
                 tmp_ops['max_downloads'] = playlist['max_downloads']
             if 'reverse' in playlist:
-                tmp_ops['playlist_reverse'] = True
+                tmp_ops['playlistreverse'] = True
             if 'datebefore' in playlist:
                 tmp_ops['datebefore'] = playlist['datebefore']
             if 'dateafter' in playlist:

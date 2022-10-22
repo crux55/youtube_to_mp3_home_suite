@@ -28,7 +28,7 @@ ydl_opts ={
 def check_or_make_dir(dir):
     if not os.path.exists(dir):
         os.mkdir(dir)
-        
+
 def read_datas(file):
     trading_info_file = Path(file)
     if not os.path.exists(trading_info_file):
@@ -75,6 +75,8 @@ with open("playlists.yaml", "r") as stream:
                 tmp_ops['datebefore'] = DateRange(end=str(playlist['datebefore']))
             if 'dateafter' in playlist:
                 tmp_ops['daterange'] = DateRange(start=str(playlist['dateafter']))
+            if 'playlist_items' in playlist:
+                tmp_ops['playlist_items'] = playlist['playlist_items']
             with yt_dlp.YoutubeDL(tmp_ops) as ydl:
                     try:
                         if isinstance(playlist['url'], str):

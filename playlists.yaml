@@ -108,7 +108,8 @@ playlists:
     url: https://www.twitch.tv/quake/videos
     format: *1080
     dateafter: 20220206
-    max_downloads: 2
+    # max_downloads: 2
+    playlist_items: 0:19
     name: '%(title)s'
     path:
     - *base_video_path

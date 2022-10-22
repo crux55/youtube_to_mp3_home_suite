@@ -111,6 +111,7 @@ playlists:
     # max_downloads: 2
     playlist_items: 0:19
     name: '%(title)s'
+    reverse: true
     path:
     - *base_video_path
     - *esports

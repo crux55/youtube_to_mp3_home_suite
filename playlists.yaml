@@ -39,14 +39,14 @@ playlists:
       - *techno
     audio_only:
 
-  # - trance:
-  #   format: *audioonly
-  #   url: https://www.youtube.com/playlist?list=PLy120FwxzcDUXO317zNyniUUyg2MWUptJ
-  #   path:
-  #     - *base_music_path
-  #     - *bootlegs
-  #     - *trance
-  #   audio_only:
+  - trance:
+    format: *audioonly
+    url: https://www.youtube.com/playlist?list=PLy120FwxzcDUXO317zNyniUUyg2MWUptJ
+    path:
+      - *base_music_path
+      - *bootlegs
+      - *trance
+    audio_only:
 
   - live_sets:
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
@@ -99,51 +99,51 @@ playlists:
     path:
       - *base_video_path 
       - *cats
-  - wot:
-    url: https://www.twitch.tv/collections/m2MIi_nTERdJXQ
-    format: *1080
-    name: *datefirst
-    path:
-    - *base_video_path
-    - *esports
-    - *wot
-  - quake:
-    url: https://www.twitch.tv/quake/videos
-    format: *1080
-    dateafter: 20220206
-    # max_downloads: 2
-    playlist_items: 0:19
-    name: *datefirst
-    reverse: true
-    path:
-    - *base_video_path
-    - *esports
-    - *quake
-  - hots:
-    url: https://www.twitch.tv/collections/cWrwLAwY6RZLuQ
-    format: *1080
-    reverse: true
-    name: *datefirst
-    path:
-    - *base_video_path
-    - *esports
-    - *hots
-  - mk:
-    url: https://www.twitch.tv/netherrealm/videos
-    format: *1080
-    dateafter: 20210606 
-    path:
-    - *base_video_path
-    - *esports
-    - *mk
+  # - wot:
+  #   url: https://www.twitch.tv/collections/m2MIi_nTERdJXQ
+  #   format: *720
+  #   name: *datefirst
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *wot
+  # - quake:
+  #   url: https://www.twitch.tv/quake/videos
+  #   format: *1080
+  #   dateafter: 20220206
+  #   # max_downloads: 2
+  #   playlist_items: 0:19
+  #   name: *datefirst
+  #   reverse: true
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *quake
+  # - hots:
+  #   url: https://www.twitch.tv/collections/cWrwLAwY6RZLuQ
+  #   format: *1080
+  #   reverse: true
+  #   name: *datefirst
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *hots
+  # - mk:
+  #   url: https://www.twitch.tv/netherrealm/videos
+  #   format: *720
+  #   dateafter: 20210606 
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *mk
   
-  - r6s:
-    url: https://www.twitch.tv/rainbow6anz/videos
-    format: *1080
-    dateafter: 20220909
-    reverse: true
-    name: *datefirst
-    path:
-    - *base_video_path
-    - *esports
-    - *r6sanz
+  # - r6s:
+  #   url: https://www.twitch.tv/rainbow6anz/videos
+  #   format: *1080
+  #   dateafter: 20220909
+  #   reverse: true
+  #   name: *datefirst
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *r6sanz

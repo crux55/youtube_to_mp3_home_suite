@@ -1,8 +1,11 @@
 from flask import Flask, render_template
 from youtubesearchpython import PlaylistsSearch
 from flask import request
+import os
+import yt_dlp
 
 app = Flask("h")
+MANUAL_DOWNLOAD_FILE = r'manual_playlists.txt'
 
 def lidarr():
     import requests
@@ -42,8 +45,28 @@ def youtube_search(artist_name, album_name):
     for result in videosSearch.result()['result']:
         frame.append(Playlist_Result(result['channel']['name'], result['title'], result['videoCount'], result['link']))
     return frame
-    
 
+def check_or_make_dir(dir):
+    if not os.path.exists(dir):
+        os.mkdir(dir)
+    
+async def call_album_puller():
+    with open("playlists.yaml", "r") as stream:
+        extension = ".mp3"
+        tmp_ops = ydl_opts ={
+            'no-overwrites': 'True',
+            'ignoreerrors': 'True'
+        }
+        folder_for_download = ''
+        file_path_and_regex = folder_for_download + '/%(title)s' + extension
+        check_or_make_dir(folder_for_download)
+        tmp_ops['outtmpl'] = file_path_and_regex
+        tmp_ops['format'] = "bestaudio/best"
+        with yt_dlp.YoutubeDL(tmp_ops) as ydl:
+            urls = open(MANUAL_DOWNLOAD_FILE, 'r').readlines()
+            for url in urls:
+                print(url)
+                ydl.download(url)
 
 
 @app.route('/reload')
@@ -57,6 +80,7 @@ def send():
     for key in request.form.keys():
         all_links.append(request.form[key])
         # don't forget metadata'
-    with open(r'manual_playlists.txt', 'w') as fp:
+    with open(MANUAL_DOWNLOAD_FILE, 'w') as fp:
         fp.write('\n'.join(all_links))
+    call_album_puller()
     return request.form

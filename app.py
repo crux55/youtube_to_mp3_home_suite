@@ -1,3 +1,5 @@
+import uuid
+
 from flask import Flask, render_template
 from youtubesearchpython import PlaylistsSearch
 from flask import request
@@ -52,21 +54,20 @@ def check_or_make_dir(dir):
         os.mkdir(dir)
     
 async def call_album_puller():
-    with open("playlists.yaml", "r") as stream:
-        extension = ".mp3"
-        tmp_ops = ydl_opts ={
-            'no-overwrites': 'True',
-            'ignoreerrors': 'True'
-        }
-        folder_for_download = '/mnt/UBERVAULT/Music/unimported'
-        file_path_and_regex = folder_for_download + '/%(title)s' + extension
+    urls = open(MANUAL_DOWNLOAD_FILE, 'r').readlines()
+    extension = ".mp3"
+    tmp_ops = ydl_opts ={
+        'no-overwrites': 'True',
+        'ignoreerrors': 'True'
+    }
+    tmp_ops['format'] = "bestaudio/best"
+    for url in urls:
+        folder_for_download = '/mnt/UBERVAULT/Music/unimported/' + str(uuid.uuid4())
         check_or_make_dir(folder_for_download)
+        file_path_and_regex = folder_for_download + '/%(title)s' + extension
         tmp_ops['outtmpl'] = file_path_and_regex
-        tmp_ops['format'] = "bestaudio/best"
         with yt_dlp.YoutubeDL(tmp_ops) as ydl:
-            urls = open(MANUAL_DOWNLOAD_FILE, 'r').readlines()
-            for url in urls:
-                ydl.download(url)
+            ydl.download(url)
 
 
 @app.route('/reload')

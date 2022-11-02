@@ -3,6 +3,7 @@ from youtubesearchpython import PlaylistsSearch
 from flask import request
 import os
 import yt_dlp
+import asyncio
 
 app = Flask("h")
 MANUAL_DOWNLOAD_FILE = r'manual_playlists.txt'
@@ -65,7 +66,6 @@ async def call_album_puller():
         with yt_dlp.YoutubeDL(tmp_ops) as ydl:
             urls = open(MANUAL_DOWNLOAD_FILE, 'r').readlines()
             for url in urls:
-                print(url)
                 ydl.download(url)
 
 
@@ -82,5 +82,5 @@ def send():
         # don't forget metadata'
     with open(MANUAL_DOWNLOAD_FILE, 'w') as fp:
         fp.write('\n'.join(all_links))
-    call_album_puller()
+    asyncio.run(call_album_puller())
     return request.form

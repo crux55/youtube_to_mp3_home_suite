@@ -58,7 +58,7 @@ async def call_album_puller():
             'no-overwrites': 'True',
             'ignoreerrors': 'True'
         }
-        folder_for_download = '/mnt/UBERVAULT/Albums/unimported'
+        folder_for_download = '/mnt/UBERVAULT/Music/unimported'
         file_path_and_regex = folder_for_download + '/%(title)s' + extension
         check_or_make_dir(folder_for_download)
         tmp_ops['outtmpl'] = file_path_and_regex

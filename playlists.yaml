@@ -19,6 +19,7 @@ paths:
 - &cats "Cat videos"
 - &bootlegs "bootlegs"
 - &techno "techno"
+- &melodictechno "melodictechno"
 - &trance "trance"
 formats:
   - &best_av "bestvideo+bestaudio"
@@ -30,6 +31,14 @@ formats:
 naming:
   - &datefirst '%(upload_date>%Y-%m-%d)s-%(title)s'
 playlists:
+  - melodictechno:
+    format: *audioonly
+    url: https://www.youtube.com/watch?v=Vo5GeeVxK34&list=PL_mgZN7oTU8Qk83Y9d_5UvAV-ehrsTenR
+    path:
+      - *base_music_path
+      - *bootlegs
+      - *melodictechno
+    audio_only:
   - techno:
     format: *audioonly
     url: https://www.youtube.com/playlist?list=PLXl9q53Jut6n2PJ-Y4xyEHo1nIJF9o_Ez

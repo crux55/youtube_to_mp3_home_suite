@@ -33,7 +33,7 @@ naming:
 playlists:
   - melodictechno:
     format: *audioonly
-    url: https://www.youtube.com/watch?v=Vo5GeeVxK34&list=PL_mgZN7oTU8Qk83Y9d_5UvAV-ehrsTenR
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2FEJ-6ILm1qh0rAo4jjueK2
     path:
       - *base_music_path
       - *bootlegs

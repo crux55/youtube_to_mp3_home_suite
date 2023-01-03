@@ -11,10 +11,13 @@ import json
 
 app = Flask("h")
 MANUAL_DOWNLOAD_FILE = r'manual_playlists.txt'
+from flask_cors import CORS, cross_origin
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 
 def lidarr():
     import requests
-    import json
     headers = {'Content-Type': 'application/json', "X-Api-Key":"8cc08967f4de4899b56299ee7950baeb"}
     response = requests.get('http://192.168.1.125:4547/api/v1/wanted/missing', headers=headers)
     all_links = []
@@ -77,6 +80,7 @@ async def call_album_puller():
 
 
 @app.route('/get-albums')
+@cross_origin()
 def generate():
     albums = lidarr()
     print(json.dumps(albums))

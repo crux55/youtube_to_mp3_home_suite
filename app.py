@@ -83,7 +83,7 @@ async def call_album_puller():
 @cross_origin()
 def generate():
     albums = lidarr()
-    return {albums: albums}
+    return tuple(albums)
 
 @app.route('/send', methods=['POST'])
 def send():

@@ -1,6 +1,6 @@
 import uuid
 
-from flask import Flask, render_template
+from flask import Flask, render_template, Response
 from youtubesearchpython import PlaylistsSearch
 from flask import request
 import os
@@ -83,7 +83,7 @@ async def call_album_puller():
 @cross_origin()
 def generate():
     albums = lidarr()
-    return tuple(albums)
+    return Response(json.dumps(albums),  mimetype='application/json')
 
 @app.route('/send', methods=['POST'])
 def send():

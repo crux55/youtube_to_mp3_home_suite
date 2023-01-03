@@ -25,7 +25,7 @@ def lidarr():
         album_name = record['title']
         artist_name = record['artist']['artistName']
         # print('{}, {}'.format(album_name, artist_name))
-        all_links.append(jsonify(Album(youtube_search(artist_name, album_name), album_name, artist_name, record['releases'][0]['trackCount'])))
+        all_links.append(Album(youtube_search(artist_name, album_name), album_name, artist_name, record['releases'][0]['trackCount']).toJSON())
     return all_links
     # album_id = response.json()['records'][0]['releases'][0]
     # artist_id = response.json()['records'][0]['artistId']
@@ -38,6 +38,10 @@ class Album():
         self.title = title
         self.artist_name = artist_name
         self.track_list_count = track_list_count
+    
+    def toJSON(self):
+        return jsonify(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
 
 class Playlist_Result():
 

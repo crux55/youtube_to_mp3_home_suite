@@ -40,7 +40,7 @@ class Album():
         self.track_list_count = track_list_count
     
     def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, 
+        return jsonify(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
 
 class Playlist_Result():
@@ -83,7 +83,7 @@ async def call_album_puller():
 @cross_origin()
 def generate():
     albums = lidarr()
-    return albums
+    return jsonify(albums)
 
 @app.route('/send', methods=['POST'])
 def send():

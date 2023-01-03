@@ -6,6 +6,8 @@ from flask import request
 import os
 import yt_dlp
 import asyncio
+from flask import jsonify
+import json
 
 app = Flask("h")
 MANUAL_DOWNLOAD_FILE = r'manual_playlists.txt'
@@ -14,13 +16,13 @@ def lidarr():
     import requests
     import json
     headers = {'Content-Type': 'application/json', "X-Api-Key":"8cc08967f4de4899b56299ee7950baeb"}
-    response = requests.get('http://192.168.1.30:4547/api/v1/wanted/missing', headers=headers)
+    response = requests.get('http://192.168.1.125:4547/api/v1/wanted/missing', headers=headers)
     all_links = []
     for record in response.json()['records']:
         album_name = record['title']
         artist_name = record['artist']['artistName']
         # print('{}, {}'.format(album_name, artist_name))
-        all_links.append(Album(youtube_search(artist_name, album_name), album_name, artist_name, record['releases'][0]['trackCount']))
+        all_links.append(Album(youtube_search(artist_name, album_name), album_name, artist_name, record['releases'][0]['trackCount']).toJSON())
     return all_links
     # album_id = response.json()['records'][0]['releases'][0]
     # artist_id = response.json()['records'][0]['artistId']
@@ -33,6 +35,10 @@ class Album():
         self.title = title
         self.artist_name = artist_name
         self.track_list_count = track_list_count
+    
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
 
 class Playlist_Result():
 
@@ -70,10 +76,11 @@ async def call_album_puller():
             ydl.download(url)
 
 
-@app.route('/reload')
+@app.route('/get-albums')
 def generate():
     albums = lidarr()
-    return render_template('index.html', albums=albums)
+    print(json.dumps(albums))
+    return json.dumps(albums)
 
 @app.route('/send', methods=['POST'])
 def send():

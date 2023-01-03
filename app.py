@@ -83,7 +83,7 @@ async def call_album_puller():
 @cross_origin()
 def generate():
     albums = lidarr()
-    return jsonify(albums)
+    return albums
 
 @app.route('/send', methods=['POST'])
 def send():

@@ -40,7 +40,7 @@ class Album():
         self.track_list_count = track_list_count
     
     def toJSON(self):
-        return jsonify(self, default=lambda o: o.__dict__, 
+        return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
 
 class Playlist_Result():

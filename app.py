@@ -1,7 +1,7 @@
 import uuid
 
 from flask import Flask, render_template, Response
-from youtubesearchpython import PlaylistsSearch
+from youtubesearchpython import PlaylistsSearch, Playlist, ResultMode
 from flask import request
 import os
 import yt_dlp
@@ -21,10 +21,11 @@ def lidarr():
     headers = {'Content-Type': 'application/json', "X-Api-Key":"8cc08967f4de4899b56299ee7950baeb"}
     response = requests.get('http://192.168.1.125:4547/api/v1/wanted/missing', headers=headers)
     all_links = []
+    print(len(response.json()['records']))
     for record in response.json()['records']:
         album_name = record['title']
         artist_name = record['artist']['artistName']
-        # print('{}, {}'.format(album_name, artist_name))
+        print('{}, {}'.format(album_name, artist_name))
         all_links.append(Album(youtube_search(artist_name, album_name), album_name, artist_name, record['releases'][0]['trackCount']).toJSON())
     return all_links
     # album_id = response.json()['records'][0]['releases'][0]
@@ -81,9 +82,16 @@ async def call_album_puller():
 
 @app.route('/get-albums')
 @cross_origin()
-def generate():
+def albums():
     albums = lidarr()
+    # print(albums)
     return Response(json.dumps(albums),  mimetype='application/json')
+
+@app.route('/playlist')
+@cross_origin()
+def playlists():
+    playlist = request.args.get('playlist')
+    return Playlist.get(playlist, mode = ResultMode.json)
 
 @app.route('/send', methods=['POST'])
 def send():

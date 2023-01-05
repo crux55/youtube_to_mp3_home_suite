@@ -79,6 +79,25 @@ async def call_album_puller():
         with yt_dlp.YoutubeDL(tmp_ops) as ydl:
             ydl.download(url)
 
+async def download_url(url, album_name):
+    extension = ".mp3"
+    tmp_ops = ydl_opts = {
+    'no-overwrites': 'True',
+    'ignoreerrors': 'True',
+    'postprocessors': [{
+        'key': 'FFmpegExtractAudio',
+        'preferredcodec': 'mp3',
+        'preferredquality': '192',
+        }],
+    }
+    tmp_ops['format'] = "bestaudio/best"
+    folder_for_download = '/mnt/UBERVAULT/Music/unimported/' + album_name
+    check_or_make_dir(folder_for_download)
+    file_path_and_regex = folder_for_download + '/%(title)s' + extension
+    tmp_ops['outtmpl'] = file_path_and_regex
+    with yt_dlp.YoutubeDL(tmp_ops) as ydl:
+        ydl.download(url)
+
 
 @app.route('/get-albums')
 @cross_origin()
@@ -93,13 +112,19 @@ def playlists():
     playlist = request.args.get('playlist')
     return Playlist.get(playlist, mode = ResultMode.json)
 
-@app.route('/send', methods=['POST'])
+@app.route('/download', methods=['POST'])
+@cross_origin()
 def send():
-    all_links = []
-    for key in request.form.keys():
-        all_links.append(request.form[key])
-        # don't forget metadata'
-    with open(MANUAL_DOWNLOAD_FILE, 'w') as fp:
-        fp.write('\n'.join(all_links))
-    asyncio.run(call_album_puller())
-    return request.form
+    body = request.json
+    for key in body.keys():
+        for url in body[key]:
+            print(url)
+    return body
+
+
+    #     all_links.append(request.form[key])
+    #     # don't forget metadata'
+    # with open(MANUAL_DOWNLOAD_FILE, 'w') as fp:
+    #     fp.write('\n'.join(all_links))
+    # asyncio.run(call_album_puller())
+    # return request.form

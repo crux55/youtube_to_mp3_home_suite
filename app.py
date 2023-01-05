@@ -116,9 +116,9 @@ def playlists():
 @cross_origin()
 def send():
     body = request.json
-    for key in body.keys():
-        for url in body[key]:
-            print(url)
+    for album_name in body.keys():
+        for url in body[album_name]:
+            asyncio.run(download_url(url, album_name))
     return body
 
 

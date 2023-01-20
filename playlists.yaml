@@ -21,6 +21,7 @@ paths:
 - &techno "techno"
 - &melodictechno "melodictechno"
 - &trance "trance"
+- &underground "underground"
 formats:
   - &best_av "bestvideo+bestaudio"
   - &720 "[height<=720]+bestaudio"
@@ -31,56 +32,64 @@ formats:
 naming:
   - &datefirst '%(upload_date>%Y-%m-%d)s-%(title)s'
 playlists:
-  - melodictechno:
-    format: *audioonly
-    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2FEJ-6ILm1qh0rAo4jjueK2
+  - underground:
+    url: https://www.youtube.com/playlist?list=PLC5E80706F645374D
     path:
       - *base_music_path
       - *bootlegs
-      - *melodictechno
+      - *underground
     audio_only:
-  - techno:
     format: *audioonly
-    url: https://www.youtube.com/playlist?list=PLXl9q53Jut6n2PJ-Y4xyEHo1nIJF9o_Ez
-    path:
-      - *base_music_path
-      - *bootlegs
-      - *techno
-    audio_only:
+  # - melodictechno:
+  #   format: *audioonly
+  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2FEJ-6ILm1qh0rAo4jjueK2
+  #   path:
+  #     - *base_music_path
+  #     - *bootlegs
+  #     - *melodictechno
+  #   audio_only:
+  # - techno:
+  #   format: *audioonly
+  #   url: https://www.youtube.com/playlist?list=PLXl9q53Jut6n2PJ-Y4xyEHo1nIJF9o_Ez
+  #   path:
+  #     - *base_music_path
+  #     - *bootlegs
+  #     - *techno
+  #   audio_only:
 
-  - trance:
-    format: *audioonly
-    url: https://www.youtube.com/playlist?list=PLy120FwxzcDUXO317zNyniUUyg2MWUptJ
-    path:
-      - *base_music_path
-      - *bootlegs
-      - *trance
-    audio_only:
+  # - trance:
+  #   format: *audioonly
+  #   url: https://www.youtube.com/playlist?list=PLy120FwxzcDUXO317zNyniUUyg2MWUptJ
+  #   path:
+  #     - *base_music_path
+  #     - *bootlegs
+  #     - *trance
+  #   audio_only:
 
-  - live_sets:
-    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
-    format: *best_av
-    path:
-      - *base_music_path 
-      - *live_sets
-  - live_gigs:
-    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GtagFWCH6Njk5Rq5cf81pI
-    format: *best_av
-    path: 
-      - *base_music_path
-      - *live_gigs
-  - water_and_rain:
-    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2FAgKQqHdvWQPUxkXaOLx8v
-    format: *720
-    path:
-      - *base_video_path
-      - *water_and_rain
-  - ambient:
-    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GcCbInkobDMgU0NzsToxFA
-    format: *1080
-    path:
-      - *base_video_path
-      - *ambient
+  # - live_sets:
+  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
+  #   format: *best_av
+  #   path:
+  #     - *base_music_path 
+  #     - *live_sets
+  # - live_gigs:
+  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GtagFWCH6Njk5Rq5cf81pI
+  #   format: *best_av
+  #   path: 
+  #     - *base_music_path
+  #     - *live_gigs
+  # - water_and_rain:
+  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2FAgKQqHdvWQPUxkXaOLx8v
+  #   format: *720
+  #   path:
+  #     - *base_video_path
+  #     - *water_and_rain
+  # - ambient:
+  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GcCbInkobDMgU0NzsToxFA
+  #   format: *1080
+  #   path:
+  #     - *base_video_path
+  #     - *ambient
   # - music_cache:
   #   url: 
   #   - https://www.youtube.com/watch?v=RobhSr2bozU
@@ -95,19 +104,19 @@ playlists:
   #   path:
   #     - *base_video_path
   #     - *motor_sport
-  - mixes:
-    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HtW78_Z3xk7CWu976tIMTk
-    format: *1080
-    path:
-      - *base_music_path 
-      - *mixes
+  # - mixes:
+  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HtW78_Z3xk7CWu976tIMTk
+  #   format: *1080
+  #   path:
+  #     - *base_music_path 
+  #     - *mixes
 
-  - catVids:
-    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HwYeOKtJnC05IVI41xZvPP
-    format: *720
-    path:
-      - *base_video_path 
-      - *cats
+  # - catVids:
+  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HwYeOKtJnC05IVI41xZvPP
+  #   format: *720
+  #   path:
+  #     - *base_video_path 
+  #     - *cats
   # - wot:
   #   url: https://www.twitch.tv/collections/m2MIi_nTERdJXQ
   #   format: *720

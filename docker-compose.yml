@@ -5,14 +5,14 @@ services:
     user: "0:0"  # Run as root to avoid permission issues with mounted volumes
     volumes:
       # Option 1: Using mapped drive letter (map \\Uber-vault\ubervault to Z: first)
-      - Y:/Music:/mnt/UBERVAULT/Music
-      - Y:/Video:/mnt/UBERVAULT/Video
-      - Y:/Torrents/Local:/mnt/UBERVAULT/Torrents/Local
+      # - Y:/Music:/mnt/UBERVAULT/Music
+      # - Y:/Video:/mnt/UBERVAULT/Video
+      # - Y:/Torrents/Local:/mnt/UBERVAULT/Torrents/Local
       
       # Alternative: WSL2 path format (if using WSL2 backend)
-      # - /mnt/UBERVAULT/Music:/mnt/UBERVAULT/Music
-      # - /mnt/UBERVAULT/Video:/mnt/UBERVAULT/Video
-      # - /mnt/UBERVAULT/Torrents/Local:/mnt/UBERVAULT/Torrents/Local
+      - /mnt/UBERVAULT/Music:/mnt/UBERVAULT/Music
+      - /mnt/UBERVAULT/Video:/mnt/UBERVAULT/Video
+      - /mnt/UBERVAULT/Torrents/Local:/mnt/UBERVAULT/Torrents/Local
       
       # Mount config file
       - ./playlists.yaml:/app/playlists.yaml:ro

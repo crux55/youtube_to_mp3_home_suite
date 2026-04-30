@@ -130,12 +130,8 @@ def youtube_music_download(artist_name, album_name, year=''):
         'no_warnings': False,
         'extractor_args': {
             'youtube': {
-                'player_client': ['android', 'web'],
-                'player_skip': ['webpage', 'configs'],
+                'player_client': ['tv', 'ios'],
             }
-        },
-        'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         },
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',

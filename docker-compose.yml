@@ -16,8 +16,12 @@ services:
       
       # Mount config file
       - ./playlists.yaml:/app/playlists.yaml:ro
+      # Mount cookies file if you have one (export from browser for youtube.com)
+      # - /home/andru/youtube-cookies.txt:/app/youtube-cookies.txt:ro
     environment:
       - TZ=UTC
+      # Set this to /app/youtube-cookies.txt if you mounted a cookies file above
+      # - YOUTUBE_COOKIES_FILE=/app/youtube-cookies.txt
       # If network drive requires credentials, add them here
       # - NETWORK_USER=your_username
       # - NETWORK_PASS=your_password

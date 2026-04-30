@@ -122,15 +122,17 @@ def youtube_music_download(artist_name, album_name, year=''):
     print(f"Saving to: {album_dir}")
     
     # Configure yt-dlp for this download
+    cookie_file = os.environ.get('YOUTUBE_COOKIES_FILE', '')
     download_opts = {
         'format': 'bestaudio/best',
         'outtmpl': os.path.join(album_dir, '%(title)s.%(ext)s'),
         'download_archive': os.path.join(album_dir, 'downloaded.txt'),
         'ignoreerrors': True,
         'no_warnings': False,
+        'cookiefile': cookie_file if cookie_file and os.path.exists(cookie_file) else None,
         'extractor_args': {
             'youtube': {
-                'player_client': ['tv', 'ios'],
+                'player_client': ['tv', 'mweb'],
             }
         },
         'postprocessors': [{

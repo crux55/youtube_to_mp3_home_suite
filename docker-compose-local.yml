@@ -11,8 +11,12 @@ services:
 
       # Mount config file
       - ./playlists.yaml:/app/playlists.yaml:ro
+      # Mount cookies file if you have one (export from browser for youtube.com)
+      # - /path/to/youtube-cookies.txt:/app/youtube-cookies.txt:ro
     environment:
       - TZ=UTC
+      # Set this to /app/youtube-cookies.txt if you mounted a cookies file above
+      # - YOUTUBE_COOKIES_FILE=/app/youtube-cookies.txt
     restart: unless-stopped
     # Uncomment if you want to run it periodically with cron
     # command: sh -c "while true; do python main.py; sleep 3600; done"

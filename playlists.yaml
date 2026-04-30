@@ -20,6 +20,7 @@ formats:
   - &720 "bestvideo[height<=720]+bestaudio"
   - &1080 "bestvideo[height<=1080]+bestaudio"
   - &twitch "best"
+  - &audio_only "bestaudio/best"
 playlists:
   - live_sets:
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
@@ -47,8 +48,8 @@ playlists:
       - *ambient
   # - music_cache:
   #   url: 
-  #   - https://www.youtube.com/watch?v=RobhSr2bozU
-  #   format: *720
+  #   - https://www.youtube.com/playlist?list=PL3701130022801F23
+  #   format: audio_only
   #   path:
   #     - *base_downloads_path
   #     - *music_cache
@@ -65,32 +66,32 @@ playlists:
     path:
       - *base_music_path 
       - *mixes
-  - wot:
-    url: https://www.twitch.tv/collections/D-fIcR9hphaBtA
-    format: *twitch
-    path:
-    - *base_video_path
-    - *esports
-    - *wot
-  - quake:
-    url: https://www.twitch.tv/quake/videos
-    format: *twitch
-    max_downloads: 4
-    path:
-    - *base_video_path
-    - *esports
-    - *quake
-  - hots:
-    url: https://www.twitch.tv/heroes_lounge/videos
-    format: *twitch
-    path:
-    - *base_video_path
-    - *esports
-    - *hots
-  - mk:
-    url: https://www.twitch.tv/netherrealm/videos
-    format: *twitch
-    path:
-    - *base_video_path
-    - *esports
-    - *mk
+  # - wot:
+  #   url: https://www.twitch.tv/collections/D-fIcR9hphaBtA
+  #   format: *twitch
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *wot
+  # - quake:
+  #   url: https://www.twitch.tv/quake/videos
+  #   format: *twitch
+  #   max_downloads: 4
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *quake
+  # - hots:
+  #   url: https://www.twitch.tv/heroes_lounge/videos
+  #   format: *twitch
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *hots
+  # - mk:
+  #   url: https://www.twitch.tv/netherrealm/videos
+  #   format: *twitch
+  #   path:
+  #   - *base_video_path
+  #   - *esports
+  #   - *mk

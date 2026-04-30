@@ -1,0 +1,46 @@
+# Ignore version control
+.git
+.gitignore
+
+# Ignore Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+.pytest_cache/
+
+# Ignore virtual environments
+venv/
+env/
+ENV/
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore downloaded files and logs
+downloaded_songs.txt
+downloaded.txt
+*.mp3
+*.mp4
+*.mkv
+*.webm
+
+# Ignore local downloads directory
+downloads/
+
+# Documentation
+README.md
+*.md
+
+# PlantUML files
+*.puml

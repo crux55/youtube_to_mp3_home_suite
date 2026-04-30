@@ -1,3 +1,4 @@
+from datetime import date
 from youtubesearchpython import PlaylistsSearch
 import os
 import yaml
@@ -11,9 +12,8 @@ from mutagen.id3 import ID3, APIC
 import requests
 
 ydl_music_opts = {
-    'format': 'bestaudio/best',
-    'download_archive': 'downloaded_songs.txt',
-    'outtmpl': '%(title)s.%(ext)s',
+    'no-overwrites': 'True',
+    'ignoreerrors': 'True',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
@@ -23,7 +23,7 @@ ydl_music_opts = {
 
 ydl_opts ={
     'no-overwrites': 'True',
-    'ignore_errors': 'True',
+    'ignoreerrors': 'True',
     # 'listformats' : 'False'
     }
 
@@ -289,6 +289,11 @@ with open("playlists.yaml", "r") as stream:
     try:
         playlist_yaml = yaml.safe_load(stream)
         for playlist in playlist_yaml['playlists']:
+            extension = ".mp4"
+            tmp_ops = ydl_opts
+            if 'audio_only' in playlist:
+                extension = ".mp3"
+                tmp_ops = ydl_music_opts
             folder_for_download = '/'.join(playlist['path'])
             check_or_make_dir(folder_for_download)
             already_downloaded = read_datas(folder_for_download + '/downloaded.txt')
@@ -314,6 +319,14 @@ with open("playlists.yaml", "r") as stream:
             tmp_ops['download_archive'] = folder_for_download + '/downloaded.txt'
             if 'max_downloads' in playlist:
                 tmp_ops['max_downloads'] = playlist['max_downloads']
+            if 'reverse' in playlist:
+                tmp_ops['playlistreverse'] = True
+            if 'datebefore' in playlist:
+                tmp_ops['datebefore'] = DateRange(end=str(playlist['datebefore']))
+            if 'dateafter' in playlist:
+                tmp_ops['daterange'] = DateRange(start=str(playlist['dateafter']))
+            if 'playlist_items' in playlist:
+                tmp_ops['playlist_items'] = playlist['playlist_items']
             with yt_dlp.YoutubeDL(tmp_ops) as ydl:
                     try:
                         if isinstance(playlist['url'], str):

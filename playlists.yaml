@@ -10,11 +10,7 @@ paths:
 - &music_cache "music_cache"
 - &motor_sport "MotorSport"
 - &mixes "Mixes"
-- &esports "Esports"
-- &wot "World of tanks"
-- &hots "Heroes of the storm"
-- &quake "Quake"
-- &mk "Mortal Kombat"
+- &bootlegs "bootlegs"
 formats:
   - &best_av "bestvideo+bestaudio"
   - &720 "bestvideo[height<=720]+bestaudio"
@@ -22,6 +18,32 @@ formats:
   - &twitch "best"
   - &audio_only "bestaudio/best"
 playlists:
+  # - melodictechno:
+  #   format: *audioonly
+  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2FEJ-6ILm1qh0rAo4jjueK2
+  #   path:
+  #     - *base_music_path
+  #     - *bootlegs
+  #     - *melodictechno
+  #   audio_only:
+  # - techno:
+  #   format: *audioonly
+  #   url: https://www.youtube.com/playlist?list=PLXl9q53Jut6n2PJ-Y4xyEHo1nIJF9o_Ez
+  #   path:
+  #     - *base_music_path
+  #     - *bootlegs
+  #     - *techno
+  #   audio_only:
+
+  # - trance:
+  #   format: *audioonly
+  #   url: https://www.youtube.com/playlist?list=PLy120FwxzcDUXO317zNyniUUyg2MWUptJ
+  #   path:
+  #     - *base_music_path
+  #     - *bootlegs
+  #     - *trance
+  #   audio_only:
+
   - live_sets:
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
     format: *best_av
@@ -36,7 +58,7 @@ playlists:
       - *live_gigs
   - water_and_rain:
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2FAgKQqHdvWQPUxkXaOLx8v
-    format: *1080
+    format: *720
     path:
       - *base_video_path
       - *water_and_rain

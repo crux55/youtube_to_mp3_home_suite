@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for album in albums %}
+<p xmlns="http://www.w3.org/1999/html">
+    Looking for {{ album.artist_name }} - {{ album.title }} - {{ album.track_list_count }} tracks
+</p>
+<form method="post" action="/send">
+    <div>
+        <table>
+            <tr>
+                <th> </th>
+                <th>Channel name</th>
+                <th>Playlist title</th>
+                <th>Video count</th>
+                <th>Link</th>
+            </tr>
+    {% for playlist in album.playlist_result %}
+
+    <tr>
+        <td> <input type="radio" id="{{ playlist.link }}" name="album_{{ album.title }}" value="{{ playlist.link }}"> <label for="{{ playlist.link }}"></label> </td>
+        <td> {{ playlist.channel_name }} </td>
+        <td> {{ playlist.title }}</td>
+        <td>{{ playlist.video_count }}</td>
+        <td><a href="{{ playlist.link }}">youtube</a></label></td>
+            <!--<label for="{{ playlist.link }}">Got {{ playlist.channel_name }} {{ playlist.title }} {{ playlist.video_count }} <a href="{{ playlist.link }}">youtube</a></label> -->
+    </tr>
+
+
+    {% endfor %}
+        </table>
+    </div>
+<hr>
+{% endfor %}
+    <div>
+        <button type="submit">Subscribe</button>
+    </div>
+</form>
+{% endblock %}

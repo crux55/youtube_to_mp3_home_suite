@@ -16,19 +16,21 @@ paths:
 - &quake "Quake"
 - &mk "Mortal Kombat"
 formats:
-  - &best_av "bestvideo+bestaudio"
-  - &720 "bestvideo[height<=720]+bestaudio"
-  - &1080 "bestvideo[height<=1080]+bestaudio"
+  - &best_av "bestvideo+bestaudio/best"
+  - &720 "bestvideo[height<=720]+bestaudio/bestvideo[height<=720]/best"
+  - &1080 "bestvideo[height<=1080]+bestaudio/bestvideo[height<=1080]/best"
   - &twitch "best"
   - &audio_only "bestaudio/best"
 playlists:
   - live_sets:
+    name: live_sets
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
     format: *1080
     path:
       - *base_music_path 
       - *live_sets
   - live_gigs:
+    name: live_gigs
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GtagFWCH6Njk5Rq5cf81pI
     format: *1080
     path: 
@@ -41,6 +43,7 @@ playlists:
   #     - *base_video_path
   #     - *water_and_rain
   - ambient:
+    name: ambient
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GcCbInkobDMgU0NzsToxFA
     format: *1080
     path:
@@ -61,6 +64,7 @@ playlists:
   #     - *base_video_path
   #     - *motor_sport
   - mixes:
+    name: mixes
     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HtW78_Z3xk7CWu976tIMTk
     format: *1080
     path:

@@ -24,6 +24,7 @@ ydl_opts = {
     'skip_unavailable_fragments': True,
     'extractor_retries': 3,
     'http_chunk_size': 10485760,  # 10MB chunks
+    'extractor_args': {'youtube': {'player_client': ['ios']}},
     }
 
 

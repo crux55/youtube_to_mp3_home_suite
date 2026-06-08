@@ -22,30 +22,30 @@ formats:
   - &twitch "best"
   - &audio_only "bestaudio/best"
 playlists:
-#   - live_sets:
-#     url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
-#     format: *1080
-#     path:
-#       - *base_music_path 
-#       - *live_sets
-  # - live_gigs:
-  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GtagFWCH6Njk5Rq5cf81pI
-  #   format: *1080
-  #   path: 
-  #     - *base_music_path
-  #     - *live_gigs
+  - live_sets:
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2G2X2TdZ4sZ2bHBVfQApjRq
+    format: *1080
+    path:
+      - *base_music_path 
+      - *live_sets
+  - live_gigs:
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GtagFWCH6Njk5Rq5cf81pI
+    format: *1080
+    path: 
+      - *base_music_path
+      - *live_gigs
   # - water_and_rain:
   #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2FAgKQqHdvWQPUxkXaOLx8v
   #   format: *1080
   #   path:
   #     - *base_video_path
   #     - *water_and_rain
-  # - ambient:
-  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GcCbInkobDMgU0NzsToxFA
-  #   format: *1080
-  #   path:
-  #     - *base_video_path
-  #     - *ambient
+  - ambient:
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2GcCbInkobDMgU0NzsToxFA
+    format: *1080
+    path:
+      - *base_video_path
+      - *ambient
   # - music_cache:
   #   url: 
   #   - https://music.youtube.com/playlist?list=OLAK5uy_nnUVjLRhI9zl_g-9XrugeJTtuJCTeig2c
@@ -60,12 +60,12 @@ playlists:
   #   path:
   #     - *base_video_path
   #     - *motor_sport
-  # - mixes:
-  #   url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HtW78_Z3xk7CWu976tIMTk
-  #   format: *1080
-  #   path:
-  #     - *base_music_path 
-  #     - *mixes
+  - mixes:
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2HtW78_Z3xk7CWu976tIMTk
+    format: *1080
+    path:
+      - *base_music_path 
+      - *mixes
   # - wot:
   #   url: https://www.twitch.tv/collections/D-fIcR9hphaBtA
   #   format: *twitch

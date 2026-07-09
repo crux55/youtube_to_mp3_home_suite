@@ -74,7 +74,7 @@ playlists:
       - *mixes
   - mood_playlist_downloader:
     name: mood_playlist_downloader
-    format: *audio_only
+    format: bestaudio
     playlist_root: *base_playlists_path
     create_m3u: true
     m3u_root: *base_playlists_path

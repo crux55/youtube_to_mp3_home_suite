@@ -203,8 +203,12 @@ def run_playlist_downloads():
                     check_or_make_dir(folder_for_download)
                     already_downloaded = read_datas(folder_for_download + '/downloaded.txt')
 
-                    # Check if this is an audio-only format
-                    is_audio_only = playlist_item['format'] in ['bestaudio/best', 'bestaudio', 'audio_only']
+                    # Treat formats that explicitly request bestaudio as audio-only.
+                    format_value = str(playlist_item.get('format', '')).strip().lower()
+                    is_audio_only = (
+                        format_value == 'audio_only'
+                        or ('bestaudio' in format_value and 'bestvideo' not in format_value)
+                    )
 
                     # Set output template and options based on format type
                     if is_audio_only:

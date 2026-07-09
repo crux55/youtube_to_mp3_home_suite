@@ -6,6 +6,7 @@ from json import JSONDecodeError
 from pathlib import Path
 import time
 import logging
+import re
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -37,6 +38,85 @@ def check_or_make_dir(dir):
             return False
     return True
 
+
+def slugify_folder_name(name):
+    """Create a filesystem-friendly folder name from a playlist label."""
+    if not name:
+        return "playlist"
+    cleaned = re.sub(r"[^\w\-. ]+", "", str(name)).strip()
+    cleaned = re.sub(r"\s+", "_", cleaned)
+    return cleaned or "playlist"
+
+
+def build_folder_for_download(playlist):
+    """Resolve target folder from either explicit path or playlist root + name."""
+    if playlist.get('playlist_root'):
+        folder_name = playlist.get('folder_name') or playlist.get('name') or "playlist"
+        return os.path.join(playlist['playlist_root'], slugify_folder_name(folder_name))
+
+    if playlist.get('path'):
+        return '/'.join(playlist['path'])
+
+    raise ValueError(
+        f"Playlist '{playlist.get('name', 'unknown')}' needs either 'path' or 'playlist_root'"
+    )
+
+
+def write_playlist_m3u(folder_for_download, m3u_root, m3u_name=None):
+    """Generate an M3U file that references downloaded audio files using relative paths."""
+    audio_exts = {'.mp3', '.m4a', '.aac', '.flac', '.ogg', '.opus', '.wav'}
+    download_folder = Path(folder_for_download)
+    root_folder = Path(m3u_root)
+
+    if not download_folder.exists():
+        logger.warning(f"Cannot create M3U. Download folder does not exist: {download_folder}")
+        return
+
+    check_or_make_dir(str(root_folder))
+
+    tracks = sorted(
+        [p for p in download_folder.iterdir() if p.is_file() and p.suffix.lower() in audio_exts],
+        key=lambda p: p.name.lower()
+    )
+
+    if not tracks:
+        logger.info(f"No audio tracks found for M3U generation in: {download_folder}")
+        return
+
+    playlist_filename = slugify_folder_name(m3u_name or download_folder.name) + '.m3u'
+    m3u_path = root_folder / playlist_filename
+
+    lines = ['#EXTM3U']
+    for track in tracks:
+        rel_path = os.path.relpath(str(track), str(root_folder)).replace('\\', '/')
+        lines.append(rel_path)
+
+    m3u_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    logger.info(f"Created/updated M3U file: {m3u_path}")
+
+
+def expand_playlist_variants(playlist):
+    """Expand a playlist entry into multiple concrete playlist configs if requested."""
+    selected = playlist.get('playlist_selection')
+    if not selected:
+        return [playlist]
+
+    expanded = []
+    for idx, item in enumerate(selected):
+        if not item or not item.get('url'):
+            continue
+
+        merged = dict(playlist)
+        merged['url'] = item['url']
+
+        item_name = item.get('name') or f"selection_{idx + 1}"
+        merged['name'] = item_name
+        merged['folder_name'] = item.get('folder_name', item_name)
+        merged['m3u_name'] = item.get('m3u_name', item_name)
+        expanded.append(merged)
+
+    return expanded
+
 def download_with_retry(ydl, urls, max_retries=3):
     """Download with retry logic and different strategies for signature extraction issues"""
     for attempt in range(max_retries):
@@ -50,7 +130,21 @@ def download_with_retry(ydl, urls, max_retries=3):
         except yt_dlp.utils.DownloadError as e:
             error_msg = str(e)
             logger.error(f"Download attempt {attempt + 1} failed: {error_msg}")
-            
+
+            # Unrecoverable errors — no point retrying
+            unrecoverable = [
+                "copyright grounds",
+                "Video unavailable",
+                "This video has been removed",
+                "account associated with this video has been terminated",
+                "This video is private",
+                "members-only",
+                "Requested format is not available",
+            ]
+            if any(msg in error_msg for msg in unrecoverable):
+                logger.warning("Unrecoverable error, skipping without retry.")
+                return False
+
             if "Signature extraction failed" in error_msg and attempt < max_retries - 1:
                 logger.info(f"Signature extraction failed, waiting 10 seconds before retry {attempt + 2}...")
                 time.sleep(10)
@@ -104,54 +198,63 @@ def run_playlist_downloads():
         try:
             playlist_yaml = yaml.safe_load(stream)
             for playlist in playlist_yaml['playlists']:
-                folder_for_download = '/'.join(playlist['path'])
-                check_or_make_dir(folder_for_download)
-                already_downloaded = read_datas(folder_for_download + '/downloaded.txt')
-                
-                # Check if this is an audio-only format
-                is_audio_only = playlist['format'] in ['bestaudio/best', 'bestaudio', 'audio_only']
-                
-                # Set output template and options based on format type
-                if is_audio_only:
-                    file_path_and_regex = folder_for_download + '/%(title)s.%(ext)s'
-                    tmp_ops = ydl_opts.copy()
-                    tmp_ops['postprocessors'] = [{
-                        'key': 'FFmpegExtractAudio',
-                        'preferredcodec': 'mp3',
-                        'preferredquality': '192',
-                    }]
-                else:
-                    file_path_and_regex = folder_for_download + '/%(title)s.mp4'
-                    tmp_ops = ydl_opts.copy()
-                
-                tmp_ops['outtmpl'] = file_path_and_regex
-                tmp_ops['format'] = playlist['format']
-                tmp_ops['download_archive'] = folder_for_download + '/downloaded.txt'
-                if 'max_downloads' in playlist:
-                    tmp_ops['max_downloads'] = playlist['max_downloads']
-                
-                print(f"Processing playlist: {playlist.get('name', 'Unknown')} with format: {playlist['format']}")
-                
-                with yt_dlp.YoutubeDL(tmp_ops) as ydl:
-                    try:
-                        if isinstance(playlist['url'], str):
-                            print(f"Downloading from URL: {playlist['url']}")
-                            success = download_with_retry(ydl, playlist['url'])
-                            if not success:
-                                logger.error(f"Failed to download playlist: {playlist['url']}")
-                        else:
-                            for url in playlist['url']:
-                                print(f"Downloading from URL: {url}")
-                                success = download_with_retry(ydl, url)
+                for playlist_item in expand_playlist_variants(playlist):
+                    folder_for_download = build_folder_for_download(playlist_item)
+                    check_or_make_dir(folder_for_download)
+                    already_downloaded = read_datas(folder_for_download + '/downloaded.txt')
+
+                    # Check if this is an audio-only format
+                    is_audio_only = playlist_item['format'] in ['bestaudio/best', 'bestaudio', 'audio_only']
+
+                    # Set output template and options based on format type
+                    if is_audio_only:
+                        file_path_and_regex = folder_for_download + '/%(title)s.%(ext)s'
+                        tmp_ops = ydl_opts.copy()
+                        tmp_ops['postprocessors'] = [{
+                            'key': 'FFmpegExtractAudio',
+                            'preferredcodec': 'mp3',
+                            'preferredquality': '192',
+                        }]
+                    else:
+                        file_path_and_regex = folder_for_download + '/%(title)s.mp4'
+                        tmp_ops = ydl_opts.copy()
+
+                    tmp_ops['outtmpl'] = file_path_and_regex
+                    tmp_ops['format'] = playlist_item['format']
+                    tmp_ops['download_archive'] = folder_for_download + '/downloaded.txt'
+                    if 'max_downloads' in playlist_item:
+                        tmp_ops['max_downloads'] = playlist_item['max_downloads']
+
+                    print(f"Processing playlist: {playlist_item.get('name', 'Unknown')} with format: {playlist_item['format']}")
+
+                    with yt_dlp.YoutubeDL(tmp_ops) as ydl:
+                        try:
+                            if isinstance(playlist_item['url'], str):
+                                print(f"Downloading from URL: {playlist_item['url']}")
+                                success = download_with_retry(ydl, playlist_item['url'])
                                 if not success:
-                                    logger.error(f"Failed to download playlist: {url}")
-                                    
-                    except yt_dlp.utils.MaxDownloadsReached as de:
-                        print(f"Max downloads reached: {de}")
-                    except Exception as e:
-                        print(f"Unexpected error: {e}")
-                        # Try to continue with other playlists
-                        continue
+                                    logger.error(f"Failed to download playlist: {playlist_item['url']}")
+                            else:
+                                for url in playlist_item['url']:
+                                    print(f"Downloading from URL: {url}")
+                                    success = download_with_retry(ydl, url)
+                                    if not success:
+                                        logger.error(f"Failed to download playlist: {url}")
+
+                        except yt_dlp.utils.MaxDownloadsReached as de:
+                            print(f"Max downloads reached: {de}")
+                        except Exception as e:
+                            print(f"Unexpected error: {e}")
+                            # Try to continue with other playlists
+                            continue
+
+                    if playlist_item.get('create_m3u'):
+                        m3u_root = playlist_item.get('m3u_root', playlist_item.get('playlist_root', folder_for_download))
+                        write_playlist_m3u(
+                            folder_for_download=folder_for_download,
+                            m3u_root=m3u_root,
+                            m3u_name=playlist_item.get('m3u_name', playlist_item.get('name'))
+                        )
         except yaml.YAMLError as exc:
             print(exc)
 

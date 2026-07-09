@@ -203,15 +203,20 @@ def run_playlist_downloads():
                     check_or_make_dir(folder_for_download)
                     already_downloaded = read_datas(folder_for_download + '/downloaded.txt')
 
-                    # Treat formats that explicitly request bestaudio as audio-only.
-                    format_value = str(playlist_item.get('format', '')).strip().lower()
+                    # Resolve format once so we don't mutate playlist config dicts.
+                    resolved_format = str(playlist_item.get('format', '')).strip()
+                    original_format_value = resolved_format.lower()
                     is_audio_only = (
-                        format_value == 'audio_only'
-                        or ('bestaudio' in format_value and 'bestvideo' not in format_value)
+                        original_format_value == 'audio_only'
+                        or ('bestaudio' in original_format_value and 'bestvideo' not in original_format_value)
                     )
 
                     # Set output template and options based on format type
                     if is_audio_only:
+                        # Avoid hard failures on some YouTube Music items where strict
+                        # bestaudio is unavailable by allowing a best fallback.
+                        if original_format_value == 'bestaudio':
+                            resolved_format = 'bestaudio/best'
                         file_path_and_regex = folder_for_download + '/%(title)s.%(ext)s'
                         tmp_ops = ydl_opts.copy()
                         tmp_ops['postprocessors'] = [{
@@ -224,12 +229,12 @@ def run_playlist_downloads():
                         tmp_ops = ydl_opts.copy()
 
                     tmp_ops['outtmpl'] = file_path_and_regex
-                    tmp_ops['format'] = playlist_item['format']
+                    tmp_ops['format'] = resolved_format
                     tmp_ops['download_archive'] = folder_for_download + '/downloaded.txt'
                     if 'max_downloads' in playlist_item:
                         tmp_ops['max_downloads'] = playlist_item['max_downloads']
 
-                    print(f"Processing playlist: {playlist_item.get('name', 'Unknown')} with format: {playlist_item['format']}")
+                    print(f"Processing playlist: {playlist_item.get('name', 'Unknown')} with format: {resolved_format}")
 
                     with yt_dlp.YoutubeDL(tmp_ops) as ydl:
                         try:

@@ -11,6 +11,20 @@ import re
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/mnt/UBERVAULT').rstrip('/\\')
+# Windows drive roots like "Y:" need a separator to resolve as absolute paths.
+if os.name == 'nt' and len(MEDIA_ROOT) == 2 and MEDIA_ROOT[1] == ':':
+    MEDIA_ROOT = MEDIA_ROOT + os.sep
+
+
+def normalize_config_path(path_value):
+    """Map playlists.yaml's /mnt/UBERVAULT paths to MEDIA_ROOT for cross-platform runs."""
+    normalized = str(path_value).replace('\\', '/')
+    if normalized.startswith('/mnt/UBERVAULT'):
+        suffix = normalized[len('/mnt/UBERVAULT'):].lstrip('/\\')
+        return os.path.normpath(os.path.join(MEDIA_ROOT, suffix))
+    return os.path.normpath(path_value)
+
 ydl_opts = {
     'no_overwrites': True,
     'ignore_errors': True,
@@ -25,8 +39,16 @@ ydl_opts = {
     'skip_unavailable_fragments': True,
     'extractor_retries': 3,
     'http_chunk_size': 10485760,  # 10MB chunks
-    'extractor_args': {'youtube': {'player_client': ['web', 'android', 'mweb']}},
+    # 'web' keeps full-quality DASH formats for video playlists; 'android' is
+    # dropped since its https formats now require a GVS PO token we don't
+    # provide and it was only generating warnings. 'mweb'/'tv' are fallbacks
+    # that still work unauthenticated when 'web' formats get SABR-throttled.
+    'extractor_args': {'youtube': {'player_client': ['web', 'mweb', 'tv']}},
     }
+
+_cookie_file = os.environ.get('YOUTUBE_COOKIES_FILE', '')
+if _cookie_file and os.path.exists(_cookie_file):
+    ydl_opts['cookiefile'] = _cookie_file
 
 
 def check_or_make_dir(dir):
@@ -52,10 +74,10 @@ def build_folder_for_download(playlist):
     """Resolve target folder from either explicit path or playlist root + name."""
     if playlist.get('playlist_root'):
         folder_name = playlist.get('folder_name') or playlist.get('name') or "playlist"
-        return os.path.join(playlist['playlist_root'], slugify_folder_name(folder_name))
+        return os.path.join(normalize_config_path(playlist['playlist_root']), slugify_folder_name(folder_name))
 
     if playlist.get('path'):
-        return '/'.join(playlist['path'])
+        return normalize_config_path('/'.join(playlist['path']))
 
     raise ValueError(
         f"Playlist '{playlist.get('name', 'unknown')}' needs either 'path' or 'playlist_root'"
@@ -258,7 +280,9 @@ def run_playlist_downloads():
                             continue
 
                     if playlist_item.get('create_m3u'):
-                        m3u_root = playlist_item.get('m3u_root', playlist_item.get('playlist_root', folder_for_download))
+                        m3u_root = normalize_config_path(
+                            playlist_item.get('m3u_root', playlist_item.get('playlist_root', folder_for_download))
+                        )
                         write_playlist_m3u(
                             folder_for_download=folder_for_download,
                             m3u_root=m3u_root,

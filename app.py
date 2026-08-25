@@ -14,6 +14,8 @@ MANUAL_DOWNLOAD_FILE = r'manual_playlists.txt'
 from flask_cors import CORS, cross_origin
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+LIDARR_ENABLED = os.environ.get('ENABLE_LIDARR', '').lower() in ('1', 'true', 'yes')
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/mnt/UBERVAULT').rstrip('/\\')
 
 
 def lidarr():
@@ -72,9 +74,9 @@ async def call_album_puller():
     }
     tmp_ops['format'] = "bestaudio/best"
     for url in urls:
-        folder_for_download = '/mnt/UBERVAULT/Music/unimported/' + str(uuid.uuid4())
+        folder_for_download = os.path.join(MEDIA_ROOT, 'Music', 'unimported', str(uuid.uuid4()))
         check_or_make_dir(folder_for_download)
-        file_path_and_regex = folder_for_download + '/%(title)s' + extension
+        file_path_and_regex = os.path.join(folder_for_download, '%(title)s' + extension)
         tmp_ops['outtmpl'] = file_path_and_regex
         with yt_dlp.YoutubeDL(tmp_ops) as ydl:
             ydl.download(url)
@@ -91,9 +93,9 @@ async def download_url(url, album_name):
         }],
     }
     tmp_ops['format'] = "bestaudio/best"
-    folder_for_download = '/mnt/UBERVAULT/Music/unimported/' + album_name
+    folder_for_download = os.path.join(MEDIA_ROOT, 'Music', 'unimported', album_name)
     check_or_make_dir(folder_for_download)
-    file_path_and_regex = folder_for_download + '/%(title)s' + extension
+    file_path_and_regex = os.path.join(folder_for_download, '%(title)s' + extension)
     tmp_ops['outtmpl'] = file_path_and_regex
     with yt_dlp.YoutubeDL(tmp_ops) as ydl:
         ydl.download(url)
@@ -102,6 +104,8 @@ async def download_url(url, album_name):
 @app.route('/get-albums')
 @cross_origin()
 def albums():
+    if not LIDARR_ENABLED:
+        return Response(json.dumps([]), mimetype='application/json')
     albums = lidarr()
     # print(albums)
     return Response(json.dumps(albums),  mimetype='application/json')

@@ -26,8 +26,8 @@ def normalize_config_path(path_value):
     return os.path.normpath(path_value)
 
 ydl_opts = {
-    'no_overwrites': True,
-    'ignore_errors': True,
+    'nooverwrites': True,
+    'ignoreerrors': True,
     'extract_flat': False,
     'writethumbnail': False,
     'writeinfojson': False,
@@ -145,10 +145,15 @@ def download_with_retry(ydl, urls, max_retries=3):
         try:
             if isinstance(urls, str):
                 urls = [urls]
-            
-            ydl.download(urls)
+
+            # With ignoreerrors enabled, a bad entry inside a playlist (e.g. a
+            # DRM-protected track) no longer raises here - it's skipped and
+            # logged by yt-dlp itself, and retcode comes back non-zero.
+            retcode = ydl.download(urls)
+            if retcode:
+                logger.warning("Some entries were skipped due to errors (see above); continuing.")
             return True
-            
+
         except yt_dlp.utils.DownloadError as e:
             error_msg = str(e)
             logger.error(f"Download attempt {attempt + 1} failed: {error_msg}")

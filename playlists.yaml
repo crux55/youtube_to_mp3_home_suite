@@ -17,6 +17,7 @@ paths:
 - &quake "Quake"
 - &mk "Mortal Kombat"
 - &train_rides "Train_rides"
+- &to_check_out "To_check_out"
 formats:
   - &best_av "bestvideo+bestaudio/best"
   - &720 "bestvideo[height<=720]+bestaudio/bestvideo[height<=720]/best"
@@ -123,3 +124,10 @@ playlists:
     path:
       - *base_video_path
       - *train_rides
+  - to_check_out:
+    name: to_check_out
+    url: https://www.youtube.com/playlist?list=PL-6ISBgjHD2F27z2noAhqs_Fw0IdRj3sV
+    format: *720
+    path:
+      - *base_music_path
+      - *to_check_out

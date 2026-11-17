@@ -1,0 +1,13 @@
+[Unit]
+Description=YouTube playlist downloader (one pass)
+After=network-online.target
+Wants=network-online.target
+RequiresMountsFor=/mnt/UBERVAULT
+
+[Service]
+Type=oneshot
+User=andru
+WorkingDirectory=/home/andru/Code/youtube_to_mp3_home_suite
+# pyenv is only initialised in interactive shells, so point at the interpreter directly.
+Environment=PYTHON=/home/andru/.pyenv/versions/3.12.9/bin/python
+ExecStart=/home/andru/Code/youtube_to_mp3_home_suite/run.sh

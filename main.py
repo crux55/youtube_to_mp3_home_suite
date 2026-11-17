@@ -38,6 +38,9 @@ ydl_opts = {
     'fragment_retries': 10,
     'skip_unavailable_fragments': True,
     'extractor_retries': 3,
+    # Without this, separate video+audio streams that can't be remuxed into the
+    # .mp4 output template were left behind as *.fNNN.mp4/webm pieces.
+    'merge_output_format': 'mp4',
     'http_chunk_size': 10485760,  # 10MB chunks
     # 'web' keeps full-quality DASH formats for video playlists; 'android' is
     # dropped since its https formats now require a GVS PO token we don't
